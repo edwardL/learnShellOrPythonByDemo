@@ -31,6 +31,24 @@ CheckTargetExist()
 	rm -f $1
 }
 
+displayArgs()
+{
+	echo "number: $#"
+	echo "program : $0"
+	echo "arg1 : $1"
+	echo "arg2 : $2"
+	echo "arg3 : $3"
+	echo "arg list : $@"
+	echo "arg param list : $*"
+	echo "progress id: $$"
+	echo "progress stat: $?"
+}
+
+
+
+
 #DelayCount 30
 
-CheckTargetExist a.txt
+#CheckTargetExist a.txt
+
+displayArgs 1 2 3
