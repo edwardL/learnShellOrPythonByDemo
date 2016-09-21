@@ -34,14 +34,24 @@ stop() {
  return $RETVAL
 }
 
+test() {
+  echo -n "test"
+  exit
+}
+
 case "$1" in
-  start)
-	start
-	;;
-  stop)
-	stop
-	;;
-  *)
-	echo "$usage"
-	exit 2
+	start)
+	    start
+	    ;;
+	stop)
+	    stop
+	    ;;
+	test)
+	    test
+	    ;;
+	*)
+	exit
 esac
+
+	
+	
