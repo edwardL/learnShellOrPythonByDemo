@@ -188,8 +188,108 @@ local s = {a = 1}
 local c = c or BaseClass(s)
 print("child.a = ",c.a)
 
+math.randomseed(os.time())
+print(math.random())
+print(math.random(10))
+
+--- 数组
+print("table len",table.getn{2,3,4})
+print("table len with nil", table.getn{10,2,nil})
+print("table len with n " , table.getn{10,2,nil; n = 3})
+print("table len with n =100",table.getn{n=1000})
+
+a = {}
+b = {1,2,3,4,5}
+for k,v in ipairs(b)  do
+ table.insert(a,v)
+end
+print_lua_table(a)
+
+print(table.remove(a,4))
 
 
+function pairsByKeys(t,f)
+  local a = {}
+  for n in pairs(t) do table.insert(a,n) end
+  table.sort(a,f)
+  local i = 0
+  local iter = function()
+    i  = i + 1
+    if a[i] == nil then return nil
+    else return a[i],t[a[i]]
+    end
+  end
+  return iter
+end
+
+a = {'A',"b","C","d"}
+table.sort(a,function(a,b) return string.lower(a) < string.lower(b) end)
+print_lua_table(a)
+
+s = "[in brackets]"
+print(string.sub(s,2,-2))
+
+print(string.format("pi = %.4f",3.1315926))
+d = 5; m = 11; y = 1882
+print(string.format("%02d/%02d/%04d",d,m,y))
+
+function GetTableSize(t)
+ local count = 0
+ for _ in pairs(t) do count = count + 1 end
+ return count
+end
+
+print(GetTableSize({a=1,b=2}))
+
+s = "dead line 20/03/1999 , asdlaa"
+date ="%d%d/%d%d/%d%d%d%d"
+print(string.sub(s,string.find(s,date)))
+
+function fsize(file)
+  local current = file:seek()
+  local size = file:seek("end")
+  file:seek("set",current)
+  return size
+end
+
+function createDir(dirname)
+  os.execute("mkdir " .. dirname) 
+end
+
+----------Debug 库
+function test_debug_get_info()
+	print_lua_table(debug.getinfo(test_debug_get_info))
+	traceback()
+end
 
 
+function traceback()
+	local level = 1
+	while true do
+	   local info = debug.getinfo(level,"Sl")
+	   if not info then break end
+	   if info.what == "C" then
+		print(level,"C func")
+	   else
+		print(string.format("[%s]:%d",info.short_src,info.currentline))
+	   end
+	   level = level + 1
+	end
+end
 
+test_debug_get_info()
+
+print("access local val----------------"
+function foo(a,b)
+   local x
+   do local c = a - b end
+   local a = 1
+   while true do 
+    local name ,value = debug.getlocal(1,a)
+    if not name then break end
+    print(name,value)
+    a = a + 1
+   end
+end
+
+foo(1,2)
