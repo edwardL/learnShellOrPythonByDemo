@@ -279,7 +279,7 @@ end
 
 test_debug_get_info()
 
-print("access local val----------------"
+print("access local val----------------")
 function foo(a,b)
    local x
    do local c = a - b end
@@ -292,4 +292,22 @@ function foo(a,b)
    end
 end
 
-foo(1,2)
+foo(10,20)
+
+function open_func_trace(...)
+ function trace(event,line)
+  local env = debug.getinfo(2)
+  local funname = env.name or "unknow"
+  local s = debug.getinfo(2).short_src
+ 
+  if string.find(s,"protocal_skill") then
+	print("trace+++++++++++++++++++++",s,funname)
+	print(debug.traceback())
+  end
+ end
+ debug.sethook(trace,"call")
+end
+
+--- debug.sethook(print,"l")
+
+
